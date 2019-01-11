@@ -191,11 +191,11 @@ class Holidays:
             self.corpus_christi
             )
 
-    def get_workdays(self) -> int:
+    def get_working_days(self) -> int:
         """
-        return the number of workdays for the year set
+        return the number of working days for the year set
 
-        :return: number of workdays for the year set
+        :return: number of working days for the year set
         """
 
         # we start with full non-leap-year
