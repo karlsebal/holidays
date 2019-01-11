@@ -7,6 +7,10 @@ contains only one class calculating the holidays
 for a particular year in a particular german state 
 using Lichtenberg’s easter algorithm
 
+purpose is to calculate the working days for a 
+particular year
+
+
 State codes used are
 
 Baden-Württemberg: BW
@@ -27,11 +31,14 @@ Schleswig-Holstein: SH
 Thüringen: TH
 """
 
+
 from datetime import date
 from datetime import timedelta
 
+
 class UnknownStateCodeException(Exception):
     pass
+
 
 class Holidays:
     """
@@ -102,7 +109,7 @@ class Holidays:
         else:
             self.all_saints = None
 
-        # repentance and prayer is wednsday between Nov. 16th and Nov. 22nd
+        # repentance and prayer is wednesday between Nov. 16th and Nov. 22nd
         if self.state in [None, 'SN']:
             for day in range(16, 23):
                 if date(year, 11, day).isoweekday() == 3:
@@ -150,14 +157,18 @@ class Holidays:
         if os > 31:
             return date(year, 4, os - 31)
         else:
-            return date(year, 4, os)
+            return date(year, 3, os)
 
 
     def get_all(self) -> tuple:
         """
-        return a tuple of all holidays
+        return a tuple of all holidays.
 
-        :return: a tuple containing all holidays
+        holidays not valid for the state set are None so
+        the tuple returned will contain None elements in
+        that case
+
+        :return: a tuple containing all holidays. 
         """
 
         return (
@@ -187,19 +198,34 @@ class Holidays:
         :return: number of workdays for the year set
         """
 
-        raise NotImplementedError
+        # we start with full non-leap-year
+        # which is 365
+        # minus minimal occurance of weekend days
+        # which is 104
+        # totalling to 261.
+        # we will adjust for leap-years in the end
+        workdays = 261
 
-        # workdays is 365 minus holidays…
-        workdays = 365 - len(self.get_all)
-        # …minus weekends. Usually.
-        workdays -= 104
+        # if first (and thus last if no leap-year) day
+        # is weekend we substract one more
+        if date(self.year, 1, 1).isoweekday() >= 6:
+            workdays -= 1
 
-        # minus one more if first and last are same day of weekend
-        # or leap year and either first or last are weekend
+        # if this is a leap-year and the last day of the year
+        # is no weekend, we have to add one
+        try:
+            date(self.year, 2, 29)
+            if date(self.year, 12, 31).isoweekday() < 6:
+                workdays += 1
+        except ValueError:
+            pass
 
-        # minus two more if leap year and first and last are weekend
+        # in the end we substract the holidays not on a weekend
+        for holiday in self.get_all():
+            if holiday and holiday.isoweekday() < 6:
+                workdays -= 1
 
-
+        # done
+        return workdays
 
 # vim: set ai sts=4 ts=4 sw=4 et:
-
