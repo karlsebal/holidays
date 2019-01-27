@@ -3,11 +3,11 @@
 """
 Module Holiday
 
-contains only one class calculating the holidays 
-for a particular year in a particular german state 
+contains only one class calculating the holidays
+for a particular year in a particular german state
 using Lichtenberg’s easter algorithm
 
-purpose is to calculate the working days for a 
+purpose is to calculate the working days for a
 particular year
 
 
@@ -48,9 +48,8 @@ class Holidays:
     :param year: year to calculate holidays for
     :param state: state to calculate holidays for
     """
-    
+
     def __init__(self, year:int, state:str=None): 
-        
 
         # prepare
         easter_sunday = Holidays.get_easter_sunday(year)
@@ -66,61 +65,84 @@ class Holidays:
 
             raise UnknownStateCodeException
 
+        self._holidays={}
 
         # common
-        self.new_year = date(year, 1, 1)
-        self.labor_day = date(year, 5, 1)
-        self.german_unification_day = date(year, 10, 3)
-        self.first_christmas_holiday = date (year, 12, 25)
-        self.second_christmas_holiday = date (year, 12, 26)
-        self.good_friday = easter_sunday - timedelta(days=2)
-        self.easter_monday = easter_sunday + timedelta(days=1)
-        self.ascention = easter_sunday + timedelta(days=39)
-        self.whit_monday = easter_sunday + timedelta(days=50)
+        self._holidays['new year'] = date(year, 1, 1)
+        self._holidays['labor day'] = date(year, 5, 1)
+        self._holidays['german unification day'] = date(year, 10, 3)
+        self._holidays['first christmas holiday'] = date(year, 12, 25)
+        self._holidays['second christmas holiday'] = date(year, 12, 26)
+        self._holidays['good friday'] = easter_sunday - timedelta(days=2)
+        self._holidays['easter monday'] = easter_sunday + timedelta(days=1)
+        self._holidays['ascention'] = easter_sunday + timedelta(days=39)
+        self._holidays['whit monday'] = easter_sunday + timedelta(days=50)
 
         # state related
         if self.state in [None, 'BY', 'BW', 'ST']:
-            self.epiphany = date(year, 1, 6)
-        else:
-            self.epiphany = None
+            self._holidays['epiphany'] = date(year, 1, 6)
 
         if self.state in [None, 'BB']:
-            self.easter_sunday = easter_sunday
-        else:
-            self.easter_sunday = None
+            self._holidays['easter sunday'] = easter_sunday
 
         if self.state in [None, 'BB']:
-            self.whit_sunday = easter_sunday + timedelta(days=49)
-        else:
-            self.whit_sunday = None
+            self._holidays['whit_sunday'] = easter_sunday + timedelta(days=49)
 
         if self.state in [None, 'BY', 'SL']:
-            self.assumption = date(year, 8, 15)
-        else:
-            self.assumption = None
+            self._holidays['assumption'] = date(year, 8, 15)
 
         if self.state in [None, 'BB', 'MV', 'SN', 'ST', 'TH']:
-            self.reformation_day = date(year, 10, 31)
-        else:
-            self.reformation_day = None
+            self._holidays['reformation day'] = date(year, 10, 31)
 
         if self.state in [None, 'BW', 'BY', 'NW', 'RP', 'SL']:
-            self.all_saints = date(year, 11, 1)
-        else:
-            self.all_saints = None
+            self._holidays['all saints'] = date(year, 11, 1)
 
         # repentance and prayer is wednesday between Nov. 16th and Nov. 22nd
         if self.state in [None, 'SN']:
             for day in range(16, 23):
                 if date(year, 11, day).isoweekday() == 3:
-                    self.repentance_and_prayer = date(year, 11, day)
-        else:
-            self.repentance_and_prayer = None
+                    self._holidays['repentance and prayer'] = date(year, 11, day)
 
         if self.state in [None, 'BW', 'BY', 'HE', 'NW', 'RP', 'SL']:
-            self.corpus_christi = easter_sunday + timedelta(days=60)
-        else:
-            self.corpus_christi = None
+            self._holidays['corpus christi'] = easter_sunday + timedelta(days=60)
+
+
+    def __repr__(self):
+        return f"Holidays({self.year}, '{self.state}')"
+
+    def __str__(self):
+        string = ''
+
+        swapped_dict = sorted(
+            [(self._holidays[holiday], holiday) for holiday in self._holidays])
+
+        for item in swapped_dict:
+            string += f'\n{item[0].strftime("%d.%m.%Y")}: {item[1]}'
+
+        # omit first newline
+        return string[1:]
+            
+
+    def __getitem__(self, item):
+        return self._holidays['item']
+
+    def __contains__(self, item):
+        return self._holidays.__contains__(item)
+
+    def __iter__(self):
+        return self._holidays.__iter__()
+
+    def __len__(self):
+        return self._holidays.__len__()
+
+    def items(self):
+        return self._holidays.items()
+
+    def keys(self):
+        return self._holidays.keys()
+
+    def values(self):
+        return self._holidays.values()
 
 
     def get_easter_sunday(year:int) -> date:
@@ -162,34 +184,13 @@ class Holidays:
 
     def get_all(self) -> tuple:
         """
-        return a tuple of all holidays.
+        return all holidays dates.
 
-        holidays not valid for the state set are None so
-        the tuple returned will contain None elements in
-        that case
-
-        :return: a tuple containing all holidays. 
+        :return: a tuple containing all holidays dates as datetime.date 
         """
 
-        return (
-            self.new_year,
-            self.labor_day,
-            self.german_unification_day,
-            self.first_christmas_holiday,
-            self.second_christmas_holiday,
-            self.good_friday,
-            self.easter_monday,
-            self.ascention,
-            self.whit_monday,
-            self.epiphany,
-            self.easter_sunday,
-            self.whit_sunday,
-            self.assumption,
-            self.reformation_day,
-            self.all_saints,
-            self.repentance_and_prayer,
-            self.corpus_christi
-            )
+        return self._holidays.values()
+
 
     def get_working_days(self) -> int:
         """
