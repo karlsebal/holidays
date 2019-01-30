@@ -82,6 +82,9 @@ class Holidays:
         if self.state in [None, 'BY', 'BW', 'ST']:
             self._holidays['epiphany'] = date(year, 1, 6)
 
+        if self.state in [None, 'BE']:
+            self._holidays['womens day'] = date(year, 3, 8)
+
         if self.state in [None, 'BB']:
             self._holidays['easter sunday'] = easter_sunday
 
@@ -91,7 +94,7 @@ class Holidays:
         if self.state in [None, 'BY', 'SL']:
             self._holidays['assumption'] = date(year, 8, 15)
 
-        if self.state in [None, 'BB', 'MV', 'SN', 'ST', 'TH']:
+        if self.state in [None, 'BB', 'HB', ,'HH', 'MV', 'NI', 'SN', 'ST', 'SH', 'TH']:
             self._holidays['reformation day'] = date(year, 10, 31)
 
         if self.state in [None, 'BW', 'BY', 'NW', 'RP', 'SL']:
