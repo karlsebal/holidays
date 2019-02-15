@@ -94,7 +94,7 @@ class Holidays:
         if self.state in [None, 'BY', 'SL']:
             self._holidays['assumption'] = date(year, 8, 15)
 
-        if self.state in [None, 'BB', 'HB', ,'HH', 'MV', 'NI', 'SN', 'ST', 'SH', 'TH']:
+        if self.state in [None, 'BB', 'HB', 'HH', 'MV', 'NI', 'SN', 'ST', 'SH', 'TH']:
             self._holidays['reformation day'] = date(year, 10, 31)
 
         if self.state in [None, 'BW', 'BY', 'NW', 'RP', 'SL']:
