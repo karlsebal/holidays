@@ -204,14 +204,14 @@ class Holidays:
 
         # we start with full non-leap-year
         # which is 365
-        # minus minimal occurance of weekend days
+        # minus minimal occurrence of weekend days
         # which is 104
         # totalling to 261.
         # we will adjust for leap-years in the end
         workdays = 261
 
         # if first (and thus last if no leap-year) day
-        # is weekend we substract one more
+        # is weekend we subtract one more
         if date(self.year, 1, 1).isoweekday() >= 6:
             workdays -= 1
 
