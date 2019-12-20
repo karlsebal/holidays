@@ -79,35 +79,36 @@ class Holidays:
         self._holidays['whit monday'] = easter_sunday + timedelta(days=50)
 
         # state related
-        if self.state in [None, 'BY', 'BW', 'ST']:
-            self._holidays['epiphany'] = date(year, 1, 6)
+        if self.state:
+            if self.state in ['BY', 'BW', 'ST']:
+                self._holidays['epiphany'] = date(year, 1, 6)
 
-        if self.state in [None, 'BE']:
-            self._holidays['womens day'] = date(year, 3, 8)
+            if self.state in ['BE']:
+                self._holidays['womens day'] = date(year, 3, 8)
 
-        if self.state in [None, 'BB']:
-            self._holidays['easter sunday'] = easter_sunday
+            if self.state in ['BB']:
+                self._holidays['easter sunday'] = easter_sunday
 
-        if self.state in [None, 'BB']:
-            self._holidays['whit_sunday'] = easter_sunday + timedelta(days=49)
+            if self.state in ['BB']:
+                self._holidays['whit_sunday'] = easter_sunday + timedelta(days=49)
 
-        if self.state in [None, 'BY', 'SL']:
-            self._holidays['assumption'] = date(year, 8, 15)
+            if self.state in ['BY', 'SL']:
+                self._holidays['assumption'] = date(year, 8, 15)
 
-        if self.state in [None, 'BB', 'HB', 'HH', 'MV', 'NI', 'SN', 'ST', 'SH', 'TH']:
-            self._holidays['reformation day'] = date(year, 10, 31)
+            if self.state in ['BB', 'HB', 'HH', 'MV', 'NI', 'SN', 'ST', 'SH', 'TH']:
+                self._holidays['reformation day'] = date(year, 10, 31)
 
-        if self.state in [None, 'BW', 'BY', 'NW', 'RP', 'SL']:
-            self._holidays['all saints'] = date(year, 11, 1)
+            if self.state in ['BW', 'BY', 'NW', 'RP', 'SL']:
+                self._holidays['all saints'] = date(year, 11, 1)
 
-        # repentance and prayer is wednesday between Nov. 16th and Nov. 22nd
-        if self.state in [None, 'SN']:
-            for day in range(16, 23):
-                if date(year, 11, day).isoweekday() == 3:
-                    self._holidays['repentance and prayer'] = date(year, 11, day)
+            # repentance and prayer is wednesday between Nov. 16th and Nov. 22nd
+            if self.state in ['SN']:
+                for day in range(16, 23):
+                    if date(year, 11, day).isoweekday() == 3:
+                        self._holidays['repentance and prayer'] = date(year, 11, day)
 
-        if self.state in [None, 'BW', 'BY', 'HE', 'NW', 'RP', 'SL']:
-            self._holidays['corpus christi'] = easter_sunday + timedelta(days=60)
+            if self.state in ['BW', 'BY', 'HE', 'NW', 'RP', 'SL']:
+                self._holidays['corpus christi'] = easter_sunday + timedelta(days=60)
 
 
     def __repr__(self):
